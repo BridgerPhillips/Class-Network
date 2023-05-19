@@ -1,0 +1,57 @@
+class Profile:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+        self.friends = []
+        self.posts = []
+
+    def add_friend(self, friend):
+        self.friends.append(friend)
+
+    def create_post(self, content):
+        post = Post(content, self)
+        self.posts.append(post)
+
+    def display_posts(self):
+        for post in self.posts:
+            print(f"Post by {post.author.name}: {post.content}")
+            post.display_comments()
+
+    def like_post(self, post):
+        post.add_like()
+
+    def comment_post(self, post, comment_content):
+        comment = Comment(comment_content, self)
+        post.add_comment(comment)
+
+class Post:
+    def __init__(self, content, author):
+        self.content = content
+        self.author = author
+        self.likes = 0
+        self.comments = []
+
+    def add_like(self):
+        self.likes += 1
+
+    def add_comment(self, comment):
+        self.comments.append(comment)
+
+    def display_comments(self):
+        for comment in self.comments:
+            print(f"- {comment.author.name}: {comment.content}")
+
+class Comment:
+    def __init__(self, content, author):
+        self.content = content
+        self.author = author
+
+# Example usage
+user1 = Profile("John Doe", "john@example.com")
+user2 = Profile("Jane Smith", "jane@example.com")
+
+user1.create_post("Hello, everyone! Excited to join the Classmates Social Network!")
+user1.like_post(user1.posts[0])
+user2.comment_post(user1.posts[0], "Welcome, John!")
+
+user1.display_posts()
